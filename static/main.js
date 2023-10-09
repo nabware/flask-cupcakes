@@ -8,6 +8,8 @@ let cupcakesList;
  * Handles new cupcake form submit
  */
 
+// #TODO: add delete button and display cupcake image and other info
+
 async function handleSubmitForm(evt) {
   evt.preventDefault();
 
