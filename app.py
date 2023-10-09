@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, connect_db, Cupcake, DEFAULT_IMAGE_URL
@@ -18,6 +18,12 @@ app.config['SECRET_KEY'] = "I'LL NEVER TELL!!"
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
+
+@app.get("/")
+def show_homepage():
+    """Renders homepage."""
+
+    return render_template("index.html")
 
 
 @app.get("/api/cupcakes")
