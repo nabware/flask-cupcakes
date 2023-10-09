@@ -13,7 +13,7 @@ class Cupcake {
     this.flavor = flavor;
     this.size = size;
     this.rating = rating;
-    this.image_url = image_url
+    this.imageUrl = image_url
   }
 
   /**

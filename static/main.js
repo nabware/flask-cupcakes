@@ -8,7 +8,7 @@ let cupcakesList;
  * Handles new cupcake form submit
  */
 
-// #TODO: add delete button and display cupcake image and other info
+// #TODO: add delete button
 
 async function handleSubmitForm(evt) {
   evt.preventDefault();
@@ -23,11 +23,32 @@ async function handleSubmitForm(evt) {
       flavor,
       size,
       rating,
-      imageUrl
+      image_url: imageUrl
     }
   );
 
-  $("<li>").text(newCupcake.flavor).prependTo($cupcakes);
+  const $cupcake = makeCupcakeElement(newCupcake);
+
+  $cupcake.prependTo($cupcakes);
+
+}
+
+/**
+ * Takes a cupcake instance an
+ * returns a JQuery Element for the cupcake.
+ */
+function makeCupcakeElement(cupcake){
+  const html = `
+    <li id="${cupcake.id}">
+      <h2>${cupcake.flavor}</h2>
+      <img src="${cupcake.imageUrl}">
+      <ul>
+        <li>Size: ${cupcake.size}</li>
+        <li>Rating: ${cupcake.rating}</li>
+      </ul>
+  `
+
+  return $(html)
 }
 
 /**
@@ -38,7 +59,8 @@ async function getAndDisplayCupcakes(){
   cupcakesList = await CupcakeList.getCupcakes();
 
   for (const cupcake of cupcakesList.cupcakes) {
-    $("<li>").text(cupcake.flavor).appendTo($cupcakes);
+    const $cupcake = makeCupcakeElement(cupcake);
+    $cupcake.appendTo($cupcakes);
   }
 }
 
