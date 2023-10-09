@@ -3,7 +3,7 @@ import os
 from flask import Flask, jsonify, request
 from flask_debugtoolbar import DebugToolbarExtension
 
-from models import db, connect_db, Cupcake
+from models import db, connect_db, Cupcake, DEFAULT_IMAGE_URL
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
@@ -72,3 +72,44 @@ def create_cupcake():
     serialized = new_cupcake.serialize()
 
     return (jsonify(cupcake=serialized), 201)
+
+
+@app.patch("/api/cupcakes/<int:cupcake_id>")
+def update_cupcake(cupcake_id):
+    """
+    Update an existing cupcake record.
+
+    Takes JSON: {flavor, size, rating, image_url} (all fields optional)
+
+    Returns JSON with data about updated cupcake:
+    {cupcake: {id, flavor, size, rating, image_url}}
+    """
+
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+    cupcake.flavor = request.json.get('flavor', cupcake.flavor)
+    cupcake.size = request.json.get('size', cupcake.size)
+    cupcake.rating = request.json.get('rating', cupcake.rating)
+    cupcake.image_url = request.json.get('image_url') or DEFAULT_IMAGE_URL
+
+    db.session.commit()
+
+    serialized = cupcake.serialize()
+
+    return jsonify(cupcake=serialized)
+
+
+@app.delete("/api/cupcakes/<int:cupcake_id>")
+def delete_cupcake(cupcake_id):
+    """
+    Delete a cupcake record.
+
+    Returns JSON with deleted cupcake id:
+    {deleted: id}
+    """
+
+    cupcake = Cupcake.query.get_or_404(cupcake_id)
+
+    db.session.delete(cupcake)
+    db.session.commit()
+
+    return jsonify(deleted=cupcake.id)
