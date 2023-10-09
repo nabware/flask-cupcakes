@@ -5,3 +5,4 @@ ipython
 psycopg2-binary
 sqlalchemy
 python-dotenv
+git+https://github.com/pallets-eco/flask-debugtoolbar
