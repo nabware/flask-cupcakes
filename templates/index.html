@@ -6,11 +6,31 @@
   <title>Cupcakes!</title>
 </head>
 <body>
-  <form id="new-cupcake-form">
+  <h1>Cupcakes!</h1>
 
+  <form id="new-cupcake-form">
+    <label for="flavor-input">Flavor</label>
+    <input id="flavor-input">
+    <br>
+
+    <label for="size-input">Size</label>
+    <input id="size-input">
+    <br>
+
+    <label for="rating-input">Rating</label>
+    <input id="rating-input">
+    <br>
+
+    <label for="image-url-input">Image URL</label>
+    <input id="image-url-input">
+    <br>
+
+    <button type="submit">Add Cupcake</button>
   </form>
+
   <ul id="cupcakes">
   </ul>
+
   <script src="https://unpkg.com/jquery"></script>
   <script src="static/models.js"></script>
   <script src="static/main.js"></script>
