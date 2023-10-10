@@ -8,12 +8,12 @@ const BASE_URL = "http://localhost:5000";
 
 class Cupcake {
 
-  constructor({id, flavor, size, rating, image_url}) {
+  constructor({ id, flavor, size, rating, image_url }) {
     this.id = id;
     this.flavor = flavor;
     this.size = size;
     this.rating = rating;
-    this.imageUrl = image_url
+    this.imageUrl = image_url;
   }
 
   /**
@@ -37,10 +37,10 @@ class CupcakeList {
     this.cupcakes = cupcakes;
   }
 
-    /**
-   * Calls the API to get all the cupcakes.
-   * Returns an instance of CupcakeList.
-   */
+  /**
+ * Calls the API to get all the cupcakes.
+ * Returns an instance of CupcakeList.
+ */
 
   static async getCupcakes() {
     const response = await fetch(`${BASE_URL}/api/cupcakes`);
@@ -70,5 +70,26 @@ class CupcakeList {
     this.cupcakes.unshift(newCupcake);
 
     return newCupcake;
+  }
+
+    /**
+   * Takes cupcake id,
+   * deletes from database and cupcake list,
+   * and returns deleted cupcake id.
+   */
+
+  async deleteCupcake(cupcakeId) {
+    const options = {
+      method: 'DELETE'
+    };
+    const response = await fetch(
+      `${BASE_URL}/api/cupcakes/${cupcakeId}`,
+      options
+    );
+    const data = await response.json();
+
+    this.cupcakes = this.cupcakes.filter(c => c.id !== data.deleted);
+
+    return data.deleted;
   }
 }

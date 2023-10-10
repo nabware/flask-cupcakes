@@ -8,8 +8,6 @@ let cupcakesList;
  * Handles new cupcake form submit
  */
 
-// #TODO: add delete button
-
 async function handleSubmitForm(evt) {
   evt.preventDefault();
 
@@ -34,9 +32,10 @@ async function handleSubmitForm(evt) {
 }
 
 /**
- * Takes a cupcake instance an
- * returns a JQuery Element for the cupcake.
+ * Takes a cupcake instance and
+ * returns a JQuery object for the cupcake.
  */
+
 function makeCupcakeElement(cupcake){
   const html = `
     <li id="${cupcake.id}">
@@ -46,6 +45,8 @@ function makeCupcakeElement(cupcake){
         <li>Size: ${cupcake.size}</li>
         <li>Rating: ${cupcake.rating}</li>
       </ul>
+      <button class="delete" data-cupcake-id="${cupcake.id}">Delete</button>
+    </li>
   `
 
   return $(html)
@@ -64,6 +65,20 @@ async function getAndDisplayCupcakes(){
   }
 }
 
+/**
+ * Handles deleting cupcake
+ */
+
+async function handleDeleteCupcake(evt) {
+  const $button = $(evt.target);
+  const cupcakeId = $button.data("cupcake-id");
+
+  const deletedCupcakeId = await cupcakesList.deleteCupcake(cupcakeId);
+
+  $button.closest(`li`).remove();
+}
+
 $newCupcakeForm.on("submit", handleSubmitForm);
+$cupcakes.on("click", ".delete", handleDeleteCupcake)
 
 getAndDisplayCupcakes();
